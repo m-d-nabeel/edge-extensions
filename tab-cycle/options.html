@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recent Tab Switcher</title>
+<style>
+  :root { color-scheme: dark; scrollbar-color: #2a2a2a #000; --ink: #efe4cf; --dim: #8f877a; --faint: #5e584f; --line: #1c1a17; --accent: #f2476f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #000; color: var(--ink); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 48px 16px 80px; }
+  header { display: flex; gap: 16px; align-items: center; margin-bottom: 36px; }
+  header img { width: 56px; height: 56px; }
+  h1 { font-size: 22px; margin: 0; font-weight: 650; letter-spacing: -.01em; }
+  header p { margin: 2px 0 0; color: var(--dim); }
+  h2 { font-size: 15px; margin: 40px 0 6px; font-weight: 650; }
+  p, li { color: var(--dim); }
+  a { color: var(--ink); }
+  code, kbd { font: 13px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); }
+  kbd { border: 1px solid #333; border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; }
+  .status { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; margin: 12px 0 16px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); flex: none; }
+  .status.ok .dot { background: #7bd88f; }
+  .status.ok { border-color: #1f3324; }
+  ol { padding-left: 20px; }
+  ol li { margin: 6px 0; }
+  pre { background: #0a0908; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; white-space: pre-wrap; word-break: break-all; color: #d9cfbb; font-size: 12.5px; margin: 10px 0; }
+  button { font: inherit; font-size: 14px; background: var(--ink); color: #000; border: 0; border-radius: 8px; padding: 7px 14px; cursor: pointer; font-weight: 600; }
+  button.quiet { background: transparent; color: var(--ink); border: 1px solid #2c2925; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .row small { display: block; color: var(--faint); font-size: 13px; margin-top: 2px; }
+  input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--ink); flex: none; }
+  input[type=number] { width: 84px; background: #0a0908; color: var(--ink); border: 1px solid #2c2925; border-radius: 8px; padding: 6px 8px; font: inherit; }
+  #trace { max-height: 260px; overflow: auto; }
+  .privacy { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icons/128.png" alt="">
+    <div>
+      <h1>Recent Tab Switcher</h1>
+      <p>Tap <kbd>Ctrl</kbd>+<kbd>Tab</kbd> to jump back to your last tab. Hold <kbd>Ctrl</kbd> and keep pressing <kbd>Tab</kbd> to see every tab, most recent first.</p>
+    </div>
+  </header>
+
+  <h2>Use Ctrl+Tab</h2>
+  <div class="status" id="status"><span class="dot"></span><span id="statusText">Checking your shortcuts…</span></div>
+  <p>The browser's shortcut screen won't accept <kbd>Ctrl</kbd>+<kbd>Tab</kbd>, but it can be set once from its console:</p>
+  <ol>
+    <li><button class="quiet" id="openShortcuts">Open the shortcuts page</button> <span id="shortcutsUrl"></span></li>
+    <li>Press <kbd>F12</kbd> and open the <b>Console</b> tab. If pasting is blocked, type <code>allow pasting</code> and press <kbd>Enter</kbd>.</li>
+    <li>Paste this and press <kbd>Enter</kbd>. It only changes this extension's shortcuts.</li>
+  </ol>
+  <pre id="snippet"></pre>
+  <button id="copy">Copy</button>
+  <p>Prefer not to? The default shortcut is <kbd>Alt</kbd>+<kbd>Q</kbd>, and you can pick any other on the shortcuts page.</p>
+
+  <h2>Settings</h2>
+  <label class="row">
+    <span>Show the tab switcher when holding<small>Nothing switches until you let go. Off: switch through the actual tabs as you press.</small></span>
+    <input type="checkbox" id="panel">
+  </label>
+  <label class="row">
+    <span>Show page previews<small>Thumbnails of tabs you've visited, kept in memory and deleted when the browser closes. Never taken in InPrivate or Incognito.</small></span>
+    <input type="checkbox" id="previews">
+  </label>
+  <label class="row">
+    <span>Switch when you let go of Ctrl<small>Off: a cycle ends after the timeout below instead.</small></span>
+    <input type="checkbox" id="commitOnRelease">
+  </label>
+  <div class="row">
+    <span>Fallback timeout (ms)<small>Used where letting go of Ctrl can't be detected: browser pages like settings and the new tab page, or with the address bar focused.</small></span>
+    <input type="number" id="timeout" min="200" max="5000" step="50" aria-label="Fallback timeout in milliseconds">
+  </div>
+
+  <h2>Recent activity</h2>
+  <p>What each Ctrl+Tab did and why. If something misbehaves, copy this into your report.</p>
+  <pre id="trace">Nothing yet. Press Ctrl+Tab in a tab, then come back.</pre>
+  <button class="quiet" id="copyTrace">Copy log</button>
+
+  <p class="privacy">Everything stays in your browser. Tab order, previews and this log live in memory and are cleared when the browser closes. Nothing is sent anywhere, and there are no analytics.</p>
+</main>
+<script src="options.js"></script>
+</body>
+</html>

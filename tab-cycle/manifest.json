@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Ctrl+Tab Recent Tab Switcher (MRU)",
+  "short_name": "Recent Tabs",
+  "version": "1.0.0",
+  "description": "Ctrl+Tab through tabs in most recently used order. Tap to jump back to your last tab, hold to see every tab with previews.",
+  "minimum_chrome_version": "120",
+  "permissions": ["storage", "tabs", "scripting", "favicon"],
+  "host_permissions": ["<all_urls>"],
+  "icons": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png" },
+  "action": {
+    "default_title": "Recent Tab Switcher: settings and shortcuts",
+    "default_icon": { "16": "icons/16.png", "32": "icons/32.png" }
+  },
+  "background": { "service_worker": "background.js" },
+  "options_ui": { "page": "options.html", "open_in_tab": true },
+  "commands": {
+    "cycle-forward": {
+      "suggested_key": { "default": "Alt+Q" },
+      "description": "Previous tab; hold the modifier and repeat to go further back"
+    },
+    "cycle-backward": {
+      "suggested_key": { "default": "Alt+Shift+Q" },
+      "description": "Same, in the other direction"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_origin_as_fallback": true
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["switcher.html"], "matches": ["<all_urls>"], "use_dynamic_url": true }
+  ]
+}

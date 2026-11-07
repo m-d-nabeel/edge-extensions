@@ -1,0 +1,7 @@
+{
+  "name": "edge-extensions-tools",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only: renders icons and store graphics, packages the extensions. Not shipped.",
+  "devDependencies": { "playwright-core": "1.56.1" }
+}

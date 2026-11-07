@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Recent Tab Switcher: fanned browser windows (newest in front, lit) and an
+       arrow cycling back to the older ones. -->
+  <rect x="2" y="2" width="124" height="124" rx="28" fill="#000"/>
+  <rect x="2.75" y="2.75" width="122.5" height="122.5" rx="27.25" fill="none" stroke="#2b2824" stroke-width="1.5"/>
+  <!-- oldest window -->
+  <rect x="48" y="22" width="54" height="40" rx="7" fill="#000" stroke="#4d4740" stroke-width="4.5"/>
+  <!-- older window -->
+  <rect x="36" y="36" width="58" height="43" rx="7" fill="#000" stroke="#8f877a" stroke-width="4.5"/>
+  <!-- current window: tab strip with the active tab cut out -->
+  <rect x="20" y="52" width="66" height="52" rx="8" fill="#efe4cf"/>
+  <rect x="27" y="58.5" width="22" height="8" rx="4" fill="#000"/>
+  <rect x="53" y="60.5" width="12" height="4" rx="2" fill="#000" opacity=".35"/>
+  <!-- the cycle -->
+  <path d="M93 100 C 113 96, 116 72, 108 55" fill="none" stroke="#f2476f" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M99.5 57 L 107.5 47.5 L 114.5 58" fill="none" stroke="#f2476f" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

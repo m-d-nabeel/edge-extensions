@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  /* color-scheme must stay "light" (matches the iframe element) or Chromium
+     paints an opaque backdrop behind the panel. Colours are all explicit. */
+  :root { color-scheme: light; --tile: min(196px, calc((100vw - 120px) / 7)); }
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+  body {
+    display: grid; place-items: center;
+    font: 12px/1.35 system-ui, -apple-system, "Segoe UI", sans-serif;
+    user-select: none; cursor: default;
+  }
+  #panel {
+    max-width: calc(100vw - 32px);
+    background: #000; color: #e8e8e8;
+    border: 1px solid #262626; border-radius: 16px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03) inset;
+    padding: 14px 14px 10px;
+    opacity: 0; transform: scale(.98);
+    transition: opacity .08s ease-out, transform .08s ease-out;
+  }
+  #panel.ready { opacity: 1; transform: none; }
+  #strip {
+    position: relative; display: flex; gap: 10px;
+    max-width: calc(var(--tile) * 7 + 60px);
+    overflow: hidden; scroll-behavior: smooth;
+    padding: 3px;
+  }
+  .tile {
+    flex: 0 0 var(--tile); width: var(--tile);
+    border-radius: 10px; padding: 6px; box-sizing: border-box;
+    outline: 2px solid transparent; outline-offset: 0;
+  }
+  .tile:hover { background: #0d0d0d; }
+  .tile.sel { background: #141414; outline-color: #e8e8e8; }
+  .thumb {
+    width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden;
+    background: #0b0b0b top left / cover no-repeat; border: 1px solid #1d1d1d;
+    display: grid; place-items: center;
+  }
+  .thumb img.big { width: 32px; height: 32px; opacity: .85; }
+  .meta { display: flex; align-items: center; gap: 6px; margin-top: 7px; min-width: 0; }
+  .meta img { width: 16px; height: 16px; flex: none; }
+  .title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #bdbdbd; }
+  .tile.sel .title { color: #fff; }
+  @media (prefers-reduced-motion: reduce) {
+    #panel, #strip { transition: none; scroll-behavior: auto; }
+    #panel { transform: none; }
+  }
+  #foot { display: flex; justify-content: space-between; color: #5e5e5e; font-size: 11px; padding: 8px 4px 0; }
+</style>
+</head>
+<body>
+  <div id="panel" role="listbox" aria-label="Recently used tabs">
+    <div id="strip"></div>
+    <div id="foot"><span id="count"></span><span>Release to switch · Esc to cancel</span></div>
+  </div>
+  <script src="switcher.js"></script>
+</body>
+</html>

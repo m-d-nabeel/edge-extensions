@@ -1,0 +1,5 @@
+tools/node_modules/
+tools/out/
+dist/
+*/Cached Theme.pak
+.DS_Store
