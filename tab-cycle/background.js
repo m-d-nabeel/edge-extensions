@@ -1,4 +1,4 @@
-// Ctrl+Tab Recent Tab Switcher — background service worker.
+// Tab Cycle — background service worker.
 //
 // Per window we keep an MRU (most-recently-used) list of tab ids.
 //

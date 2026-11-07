@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <!-- Recent Tab Switcher: fanned browser windows (newest in front, lit) and an
+  <!-- Tab Cycle: fanned browser windows (newest in front, lit) and an
        arrow cycling back to the older ones. -->
   <rect x="2" y="2" width="124" height="124" rx="28" fill="#000"/>
   <rect x="2.75" y="2.75" width="122.5" height="122.5" rx="27.25" fill="none" stroke="#2b2824" stroke-width="1.5"/>

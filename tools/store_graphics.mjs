@@ -22,8 +22,8 @@ export async function renderStore(shot, ROOT, HERE) {
   await shot(`${FONTS}<div style="${base}width:440px;height:280px;position:relative;overflow:hidden">
     <div style="position:absolute;left:28px;top:30px;width:84px;height:84px">${icon.replace('<svg ', '<svg width="84" height="84" ')}</div>
     <div style="position:absolute;left:28px;top:132px;right:24px">
-      <div style="font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.05">Recent Tab<br>Switcher</div>
-      <div style="margin-top:12px;font-size:16px;color:#8f877a">${kbd('Ctrl')} + ${kbd('Tab')} in most recently used order</div>
+      <div style="font-size:40px;font-weight:700;letter-spacing:-.02em;line-height:1.05">Tab Cycle</div>
+      <div style="margin-top:12px;font-size:16px;color:#8f877a">${kbd('Alt')} + ${kbd('Q')} switches between your recent tabs</div>
     </div>
   </div>`, 440, 280, path.join(S, 'promo-small-440x280.png'));
 
@@ -31,8 +31,8 @@ export async function renderStore(shot, ROOT, HERE) {
   await shot(`${FONTS}<div style="${base}width:1400px;height:560px;position:relative;overflow:hidden">
     <div style="position:absolute;left:84px;top:96px;width:520px">
       <div style="width:96px;height:96px">${icon.replace('<svg ', '<svg width="96" height="96" ')}</div>
-      <div style="margin-top:34px;font-size:64px;font-weight:700;letter-spacing:-.025em;line-height:1">Recent Tab Switcher</div>
-      <div style="margin-top:22px;font-size:24px;line-height:1.5;color:#a39a8b">Tap ${kbd('Ctrl')} + ${kbd('Tab')} for your last tab.<br>Hold it to see every tab, most recent first.</div>
+      <div style="margin-top:34px;font-size:64px;font-weight:700;letter-spacing:-.025em;line-height:1">Tab Cycle</div>
+      <div style="margin-top:22px;font-size:24px;line-height:1.5;color:#a39a8b">Tap ${kbd('Alt')} + ${kbd('Q')} for your last tab.<br>Hold it to see every tab, most recent first.</div>
     </div>
     <div style="position:absolute;left:650px;top:206px;width:864px;height:142px;border-radius:13px;overflow:hidden;
       background:url(${panelShot}) -80px -249px / 1024px 640px no-repeat;box-shadow:0 0 0 1px #2b2824, 0 30px 90px rgba(242,71,111,.08)"></div>
@@ -44,14 +44,14 @@ export async function renderStore(shot, ROOT, HERE) {
       <div style="margin-top:14px;font-size:36px;font-weight:700;letter-spacing:-.015em;line-height:1.1">${title}</div>
       <div style="margin-top:18px;font-size:22px;line-height:1.55;color:#a39a8b">${body}</div></div>`;
   await shot(`${FONTS}<div style="${base}width:1280px;height:800px;box-sizing:border-box;padding:0 72px;display:flex;flex-direction:column;justify-content:center">
-    <div style="font-size:60px;font-weight:700;letter-spacing:-.025em">Ctrl+Tab, the way it should work</div>
-    <div style="margin-top:16px;font-size:25px;color:#8f877a">Tabs are ordered by when you last used them, not by where they sit.</div>
+    <div style="font-size:60px;font-weight:700;letter-spacing:-.025em">Switch tabs by when you used them</div>
+    <div style="margin-top:16px;font-size:25px;color:#8f877a">Your most recent tab is always one keypress away, wherever it sits in the strip.</div>
     <div style="display:flex;gap:22px;margin-top:60px">
-      ${step('Tap', 'Back to your last tab', `Press ${kbd('Ctrl')} + ${kbd('Tab')} and let go. Press again to flip back. Perfect for working between two tabs.`)}
-      ${step('Hold', 'See every tab', `Keep ${kbd('Ctrl')} held and press ${kbd('Tab')} again. A panel shows your tabs with previews, most recent first.`)}
-      ${step('Release', 'Switch once', `Let go of ${kbd('Ctrl')} to switch. ${kbd('Shift')} goes the other way, ${kbd('Esc')} cancels, or click a tab.`)}
+      ${step('Tap', 'Back to your last tab', `Press ${kbd('Alt')} + ${kbd('Q')} and let go. Press again to flip back. Perfect for working between two tabs.`)}
+      ${step('Hold', 'See every tab', `Keep ${kbd('Alt')} held and press ${kbd('Q')} again. A panel shows your tabs with previews, most recent first.`)}
+      ${step('Release', 'Switch once', `Let go of ${kbd('Alt')} to switch. ${kbd('Shift')} goes the other way, ${kbd('Esc')} cancels, or click a tab.`)}
     </div>
-    <div style="margin-top:48px;font-size:20px;color:#6b645a">Works with vertical tabs. Nothing leaves your browser: no accounts, no analytics.</div>
+    <div style="margin-top:48px;font-size:20px;color:#6b645a">Pick any shortcut, even Ctrl+Tab (advanced). Works with vertical tabs. No accounts, no analytics.</div>
   </div>`, 1280, 800, path.join(S, 'screenshot-2-how-it-works.png'));
 
   // ---------- Totality theme ----------

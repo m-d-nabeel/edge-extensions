@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Recent Tab Switcher</title>
+<title>Tab Cycle</title>
 <style>
-  :root { color-scheme: dark; scrollbar-color: #2a2a2a #000; --ink: #efe4cf; --dim: #8f877a; --faint: #5e584f; --line: #1c1a17; --accent: #f2476f; }
+  :root { color-scheme: dark; scrollbar-color: #2a2a2a #000; --ink: #efe4cf; --dim: #8f877a; --faint: #5e584f; --line: #1c1a17; --accent: #f2476f; --warn: #e8a23a; }
   * { box-sizing: border-box; }
   body { margin: 0; background: #000; color: var(--ink); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
   main { max-width: 680px; margin: 0 auto; padding: 48px 16px 80px; }
@@ -15,19 +15,26 @@
   header p { margin: 2px 0 0; color: var(--dim); }
   h2 { font-size: 15px; margin: 40px 0 6px; font-weight: 650; }
   p, li { color: var(--dim); }
-  a { color: var(--ink); }
   code, kbd { font: 13px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); }
-  kbd { border: 1px solid #333; border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; }
-  .status { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; margin: 12px 0 16px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); flex: none; }
-  .status.ok .dot { background: #7bd88f; }
-  .status.ok { border-color: #1f3324; }
+  kbd { border: 1px solid #333; border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; white-space: nowrap; }
+  .status { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; margin: 12px 0; }
+  .status span { color: var(--ink); }
   ol { padding-left: 20px; }
   ol li { margin: 6px 0; }
   pre { background: #0a0908; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; white-space: pre-wrap; word-break: break-all; color: #d9cfbb; font-size: 12.5px; margin: 10px 0; }
-  button { font: inherit; font-size: 14px; background: var(--ink); color: #000; border: 0; border-radius: 8px; padding: 7px 14px; cursor: pointer; font-weight: 600; }
+  button { font: inherit; font-size: 14px; background: var(--ink); color: #000; border: 0; border-radius: 8px; padding: 7px 14px; cursor: pointer; font-weight: 600; white-space: nowrap; }
   button.quiet { background: transparent; color: var(--ink); border: 1px solid #2c2925; }
-  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  details { margin-top: 40px; border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; }
+  summary { cursor: pointer; padding: 14px 0; font-weight: 650; list-style: none; display: flex; justify-content: space-between; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "Show"; color: var(--faint); font-weight: 400; font-size: 13px; }
+  details[open] summary::after { content: "Hide"; }
+  details[open] { padding-bottom: 16px; }
+  .hazard { border: 1px solid #4a3413; background: #120c03; border-radius: 10px; padding: 12px 14px; margin: 4px 0 14px; }
+  .hazard strong { color: var(--warn); }
+  .hazard ul { margin: 6px 0 0; padding-left: 18px; }
+  .hazard li { margin: 4px 0; }
   .row { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 14px 0; border-top: 1px solid var(--line); }
   .row small { display: block; color: var(--faint); font-size: 13px; margin-top: 2px; }
   input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--ink); flex: none; }
@@ -41,22 +48,17 @@
   <header>
     <img src="icons/128.png" alt="">
     <div>
-      <h1>Recent Tab Switcher</h1>
-      <p>Tap <kbd>Ctrl</kbd>+<kbd>Tab</kbd> to jump back to your last tab. Hold <kbd>Ctrl</kbd> and keep pressing <kbd>Tab</kbd> to see every tab, most recent first.</p>
+      <h1>Tab Cycle</h1>
+      <p>Tap <kbd class="sc-full">Alt+Q</kbd> to jump back to your last tab. Hold <kbd class="sc-mod">Alt</kbd> and press <kbd class="sc-key">Q</kbd> again to see every tab, most recent first.</p>
     </div>
   </header>
 
-  <h2>Use Ctrl+Tab</h2>
-  <div class="status" id="status"><span class="dot"></span><span id="statusText">Checking your shortcuts…</span></div>
-  <p>The browser's shortcut screen won't accept <kbd>Ctrl</kbd>+<kbd>Tab</kbd>, but it can be set once from its console:</p>
-  <ol>
-    <li><button class="quiet" id="openShortcuts">Open the shortcuts page</button> <span id="shortcutsUrl"></span></li>
-    <li>Press <kbd>F12</kbd> and open the <b>Console</b> tab. If pasting is blocked, type <code>allow pasting</code> and press <kbd>Enter</kbd>.</li>
-    <li>Paste this and press <kbd>Enter</kbd>. It only changes this extension's shortcuts.</li>
-  </ol>
-  <pre id="snippet"></pre>
-  <button id="copy">Copy</button>
-  <p>Prefer not to? The default shortcut is <kbd>Alt</kbd>+<kbd>Q</kbd>, and you can pick any other on the shortcuts page.</p>
+  <h2>Shortcut</h2>
+  <div class="status">
+    <span id="statusText">Checking…</span>
+    <button class="quiet" id="openShortcuts">Change shortcut</button>
+  </div>
+  <p>Tap it to flip between your two most recent tabs. Hold the first key and keep pressing the second to see all tabs; let go to switch, or press <kbd>Esc</kbd> to cancel. Adding <kbd>Shift</kbd> goes the other way.</p>
 
   <h2>Settings</h2>
   <label class="row">
@@ -68,17 +70,37 @@
     <input type="checkbox" id="previews">
   </label>
   <label class="row">
-    <span>Switch when you let go of Ctrl<small>Off: a cycle ends after the timeout below instead.</small></span>
+    <span>Switch when you let go<small>Off: a cycle ends after the timeout below instead.</small></span>
     <input type="checkbox" id="commitOnRelease">
   </label>
   <div class="row">
-    <span>Fallback timeout (ms)<small>Used where letting go of Ctrl can't be detected: browser pages like settings and the new tab page, or with the address bar focused.</small></span>
+    <span>Fallback timeout (ms)<small>Used where letting go can't be detected: browser pages like settings and the new tab page, or with the address bar focused.</small></span>
     <input type="number" id="timeout" min="200" max="5000" step="50" aria-label="Fallback timeout in milliseconds">
   </div>
 
+  <details id="advanced">
+    <summary>Advanced: use Ctrl+Tab instead</summary>
+    <div class="hazard" role="note">
+      <strong>For experienced users. Proceed at your own risk.</strong>
+      <ul>
+        <li>The browser doesn't let extensions take <kbd>Ctrl</kbd>+<kbd>Tab</kbd>, so this is done by running a command in the browser's developer console.</li>
+        <li>It replaces the browser's own <kbd>Ctrl</kbd>+<kbd>Tab</kbd> (next tab to the right) for as long as this extension is installed.</li>
+        <li>Only paste code into a console when you understand it. This snippet only changes this extension's two shortcuts; read it before running it.</li>
+        <li>To undo, set a different shortcut with <b>Change shortcut</b> above, or remove the extension.</li>
+      </ul>
+    </div>
+    <ol>
+      <li><button class="quiet" id="openShortcuts2">Open the shortcuts page</button> <span class="shortcutsUrl"></span></li>
+      <li>Press <kbd>F12</kbd> and open the <b>Console</b> tab. If pasting is blocked, type <code>allow pasting</code> and press <kbd>Enter</kbd>.</li>
+      <li>Paste this and press <kbd>Enter</kbd>, then come back here.</li>
+    </ol>
+    <pre id="snippet"></pre>
+    <button id="copy">Copy</button>
+  </details>
+
   <h2>Recent activity</h2>
-  <p>What each Ctrl+Tab did and why. If something misbehaves, copy this into your report.</p>
-  <pre id="trace">Nothing yet. Press Ctrl+Tab in a tab, then come back.</pre>
+  <p>What each press did and why. If something misbehaves, copy this into your report.</p>
+  <pre id="trace">Nothing yet. Use the shortcut in a tab, then come back.</pre>
   <button class="quiet" id="copyTrace">Copy log</button>
 
   <p class="privacy">Everything stays in your browser. Tab order, previews and this log live in memory and are cleared when the browser closes. Nothing is sent anywhere, and there are no analytics.</p>

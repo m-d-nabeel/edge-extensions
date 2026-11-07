@@ -2,7 +2,7 @@
 
 | Folder | Store name | What it is |
 |---|---|---|
-| `tab-cycle/` | **Ctrl+Tab Recent Tab Switcher (MRU)** | Ctrl+Tab in most-recently-used order, with a switcher panel |
+| `tab-cycle/` | **Tab Cycle (MRU) – Switch Recent Tabs** | Alt+Q (or Ctrl+Tab, advanced) switches tabs in most-recently-used order, with a switcher panel |
 | `amoled-theme/` | **AMOLED Pure Black Theme – Totality** | True-black OLED theme with an eclipse on the new tab page |
 
 ## Publishing
@@ -21,19 +21,19 @@
   - `node tools/theme_screens.mjs`: real browser windows; needs a desktop session.
 - **Eclipse artwork:** `python tools/render_totality.py` (needs numpy and Pillow).
 
-## Ctrl+Tab Recent Tab Switcher: how it works
-- **Tap Ctrl+Tab:** switches straight to your previous tab with no panel. Tap again to toggle back.
-- **Hold Ctrl and press Tab again:** a panel shows your tabs with previews, most recent first. Tab and Shift+Tab move the selection.
+## Tab Cycle: how it works
+- **Tap Alt+Q:** switches straight to your previous tab with no panel. Tap again to toggle back.
+- **Hold Alt and press Q again:** a panel shows your tabs with previews, most recent first. Q and Shift+Q move the selection.
 - **Let go:** switches once, so the tabs you passed over keep their place in the history.
 - **Cancel:** Esc, clicking outside the panel or Alt+Tab away.
 - **Where the panel isn't possible** (address bar focused, `edge://` pages, the new tab page): the first press switches directly, and a second press while holding brings up the panel on the tab you landed on.
-- **Default shortcut:** Alt+Q. Ctrl+Tab needs a one-time console step, which the settings page walks you through.
+- **Shortcut:** Alt+Q is the official shortcut. Ctrl+Tab is possible as an advanced, at-your-own-risk option on the settings page; it needs a one-time console step, because browsers don't let extensions claim Ctrl+Tab.
 - **Troubleshooting:** Settings → Recent activity shows what each press did and why.
 
 **Reliability details:**
 - The panel only opens on a page that saw the modifier go down, because only that page is certain to see it come up.
 - Release timing uses the background's own clock, never the page's.
-- Backstops: moving the mouse over the panel with Ctrl already up switches, and the panel closes after 8 s.
+- Backstops: moving the mouse over the panel with the modifier already up switches, and the panel closes after 8 s.
 
 **Security and privacy:**
 - Only real key events count (`isTrusted`), so pages can't fake key presses.
@@ -51,9 +51,9 @@
 **Tested** in Edge 157 (native Wayland, real kernel-level keystrokes via `/dev/uinput`, vertical tabs):
 - tap
 - hold
-- fast Ctrl+Tab then Tab Tab
+- fast Ctrl+Tab then Tab Tab (advanced binding)
 - address bar focused
-- default Alt+Q
+- Alt+Q (official)
 - Shift for the other direction
 - Esc
 - extension reload with tabs already open

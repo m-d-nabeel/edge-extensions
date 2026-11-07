@@ -15,33 +15,41 @@ $('timeout').addEventListener('change', (e) => {
   chrome.storage.sync.set({ timeout: v });
 });
 
-// ---------- Ctrl+Tab setup ----------
+// ---------- shortcut ----------
 const isEdge = (navigator.userAgentData?.brands || []).some((b) => /Edge/i.test(b.brand)) || / Edg\//.test(navigator.userAgent);
 const shortcutsUrl = (isEdge ? 'edge' : 'chrome') + '://extensions/shortcuts';
-$('shortcutsUrl').textContent = shortcutsUrl;
-$('openShortcuts').addEventListener('click', () => chrome.tabs.create({ url: shortcutsUrl }));
-
-const id = chrome.runtime.id;
-$('snippet').textContent =
-`chrome.developerPrivate.updateExtensionCommand({ extensionId: "${id}", commandName: "cycle-forward", keybinding: "Ctrl+Tab" });
-chrome.developerPrivate.updateExtensionCommand({ extensionId: "${id}", commandName: "cycle-backward", keybinding: "Ctrl+Shift+Tab" });`;
+for (const el of document.querySelectorAll('.shortcutsUrl')) el.textContent = shortcutsUrl;
+for (const id of ['openShortcuts', 'openShortcuts2']) $(id).addEventListener('click', () => chrome.tabs.create({ url: shortcutsUrl }));
 
 const flash = (btn, text) => { const old = btn.textContent; btn.textContent = text; setTimeout(() => (btn.textContent = old), 1200); };
-$('copy').addEventListener('click', async () => { await navigator.clipboard.writeText($('snippet').textContent); flash($('copy'), 'Copied'); });
 
 async function showShortcuts() {
   const cmds = await chrome.commands.getAll();
   const fwd = cmds.find((c) => c.name === 'cycle-forward')?.shortcut || '';
   const back = cmds.find((c) => c.name === 'cycle-backward')?.shortcut || '';
-  const ctrlTab = /^Ctrl\+Tab$/i.test(fwd);
-  $('status').classList.toggle('ok', ctrlTab);
-  $('statusText').textContent = ctrlTab
-    ? `Ctrl+Tab is set${back ? ` (and ${back} for the other direction)` : ''}. You're done.`
-    : `Current shortcut: ${fwd || 'none'}. Follow the steps below to use Ctrl+Tab.`;
+  $('statusText').textContent = fwd
+    ? `Your shortcut: ${fwd}${back ? ` (${back} for the other direction)` : ''}`
+    : 'No shortcut set. Use "Change shortcut" to pick one.';
+  // Make the explanation match the shortcut actually in use.
+  if (fwd) {
+    const parts = fwd.split('+');
+    const key = parts.pop();
+    for (const el of document.querySelectorAll('.sc-full')) el.textContent = fwd;
+    for (const el of document.querySelectorAll('.sc-mod')) el.textContent = parts.join('+');
+    for (const el of document.querySelectorAll('.sc-key')) el.textContent = key;
+  }
+  if (/^Ctrl\+Tab$/i.test(fwd)) $('advanced').querySelector('summary').textContent = 'Advanced: Ctrl+Tab is in use';
 }
 showShortcuts();
 // Pick up a change made on the shortcuts page when the user comes back.
 document.addEventListener('visibilitychange', () => { if (!document.hidden) showShortcuts(); });
+
+// ---------- advanced: Ctrl+Tab ----------
+const id = chrome.runtime.id;
+$('snippet').textContent =
+`chrome.developerPrivate.updateExtensionCommand({ extensionId: "${id}", commandName: "cycle-forward", keybinding: "Ctrl+Tab" });
+chrome.developerPrivate.updateExtensionCommand({ extensionId: "${id}", commandName: "cycle-backward", keybinding: "Ctrl+Shift+Tab" });`;
+$('copy').addEventListener('click', async () => { await navigator.clipboard.writeText($('snippet').textContent); flash($('copy'), 'Copied'); });
 
 // ---------- activity log ----------
 async function showTrace() {

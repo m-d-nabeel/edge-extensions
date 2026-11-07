@@ -1,6 +1,6 @@
-# Store listing: Ctrl+Tab Recent Tab Switcher (MRU)
+# Store listing: Tab Cycle (MRU) – Switch Recent Tabs
 
-**Package:** `dist/ctrl-tab-recent-tab-switcher-1.0.0.zip` (build with `tools/package.sh`)
+**Package:** `dist/tab-cycle-mru-1.0.0.zip` (build with `tools/package.sh`)
 
 **Where to submit:**
 - **Microsoft Edge Add-ons** via Partner Center: https://partner.microsoft.com/dashboard/microsoftedge
@@ -9,12 +9,12 @@
 ---
 
 ## Name
-Comes from the manifest: `Ctrl+Tab Recent Tab Switcher (MRU)`
+Comes from the manifest: `Tab Cycle (MRU) – Switch Recent Tabs`
 
 ## Short description
-Comes from the manifest (122 chars):
+Comes from the manifest (123 chars):
 
-> Ctrl+Tab through tabs in most recently used order. Tap to jump back to your last tab, hold to see every tab with previews.
+> Switch tabs in most recently used order with Alt+Q. Tap to jump back to your last tab, hold to see every tab with previews.
 
 ## Description
 Paste the following; it's 250–10,000 characters, as Edge requires.
@@ -23,10 +23,10 @@ Paste the following; it's 250–10,000 characters, as Edge requires.
 Switch tabs the way you actually work: by when you last used them, not by where they sit in the tab strip.
 
 TAP to go back
-Press Ctrl+Tab and let go to jump to the tab you were just on. Press it again to flip back. Perfect for working between two tabs, like docs and code, or an email and a spreadsheet.
+Press Alt+Q and let go to jump to the tab you were just on. Press it again to flip back. Perfect for working between two tabs, like docs and code, or an email and a spreadsheet.
 
 HOLD to see every tab
-Keep Ctrl held and press Tab again. A panel appears with your tabs and page previews, most recent first. Keep pressing Tab to move through them, Shift+Tab to go back, then let go of Ctrl to switch. Esc cancels, and you can also click a tab.
+Keep Alt held and press Q again. A panel appears with your tabs and page previews, most recent first. Keep pressing Q to move through them, Shift+Q to go back, then let go of Alt to switch. Esc cancels, and you can also click a tab.
 
 Nothing switches until you let go, so the tabs you pass over keep their place in your history.
 
@@ -36,11 +36,11 @@ FEATURES
 • Switcher panel with page previews, titles and site icons
 • Works with vertical tabs and horizontal tabs
 • Also works from the address bar and browser pages, switching directly there
-• Ctrl+Tab, Alt+Q or any shortcut you like
+• Alt+Q by default; change it to any shortcut you like
 • Dark, minimal design
 
-SETTING UP CTRL+TAB
-Browsers don't let extensions claim Ctrl+Tab from the regular shortcuts screen. The settings page that opens after install walks you through a one-time step (copy, paste into the console of the shortcuts page, done). Or keep the default Alt+Q.
+PREFER CTRL+TAB?
+Browsers don't let extensions take Ctrl+Tab from the normal shortcuts screen. For experienced users, the settings page has an advanced, at-your-own-risk option that assigns Ctrl+Tab with a one-time step in the browser's developer console. It's clearly explained and easy to undo.
 
 PRIVATE BY DESIGN
 • No accounts, no analytics, no ads, no network requests
@@ -48,21 +48,21 @@ PRIVATE BY DESIGN
 • Previews are never taken in InPrivate windows, and you can turn them off
 
 Permissions explained:
-• Read your browsing history / all sites: to know which tabs you've used, show their titles and previews, and notice when you let go of Ctrl on the page you're on. Nothing leaves your browser.
+• Read your browsing history / all sites: to know which tabs you've used, show their titles and previews, and notice when you let go of the shortcut on the page you're on. Nothing leaves your browser.
 ```
 
 ## Category
 **Productivity**
 
 ## Search terms
-Edge allows 7 terms, each 30 characters or fewer, 21 words in total. These use 18 words:
-1. `ctrl tab`
+Edge allows 7 terms, each 30 characters or fewer, 21 words in total. These use 17 words:
+1. `tab cycle`
 2. `recent tabs`
-3. `tab switcher`
-4. `last used tab`
-5. `mru tab order`
-6. `switch between tabs`
-7. `previous tab shortcut`
+3. `ctrl tab`
+4. `tab switcher`
+5. `last used tab`
+6. `mru tab order`
+7. `switch between tabs`
 
 ## Graphics
 All files are in this folder.
@@ -90,7 +90,7 @@ For the Chrome Web Store:
 **Support contact:** md.nabeel.dev@gmail.com
 
 **Single purpose:**
-> Lets the user switch browser tabs in most-recently-used order with a keyboard shortcut (Ctrl+Tab), including a switcher panel that lists open tabs.
+> Lets the user switch browser tabs in most-recently-used order with a keyboard shortcut (Alt+Q by default), including a switcher panel that lists open tabs.
 
 **Permission justifications:**
 
@@ -100,7 +100,7 @@ For the Chrome Web Store:
 | `storage` | Saves the user's settings, and keeps the most-recently-used tab order and preview images in session (memory-only) storage, so it survives the background worker sleeping. |
 | `scripting` | Checks, at the moment the shortcut is pressed, whether the current page saw the modifier key go down (to decide whether the panel can be shown there). Also adds the key-release listener to tabs that were already open at install. |
 | `favicon` | Shows each tab's site icon in the switcher panel. |
-| Host permission `<all_urls>` | The content script must run on every site to detect when the user releases Ctrl, which is when the switch happens. It's also required by `tabs.captureVisibleTab` to make the tab preview images. The script only listens for modifier key events and never reads or changes page content. |
+| Host permission `<all_urls>` | The content script must run on every site to detect when the user releases the shortcut's modifier key, which is when the switch happens. It's also required by `tabs.captureVisibleTab` to make the tab preview images. The script only listens for modifier key events and never reads or changes page content. |
 
 **Remote code:** No. All code is in the package; no remote scripts, no `eval`.
 
@@ -112,18 +112,18 @@ For the Chrome Web Store:
 Paste this into the field for testers:
 
 ```
-No account or setup needed.
+No account or setup needed. Shortcut: Alt+Q (Alt+Shift+Q for the other direction).
 
-Default shortcut: Alt+Q (and Alt+Shift+Q for the other direction).
 1. Open 3–4 normal websites in tabs, visiting them one after another.
 2. Tap Alt+Q: switches to the previously used tab. Tap again: back.
 3. Hold Alt, press Q three times, then let go of Alt: a panel with tab previews
    appears while Alt is held; releasing switches to the selected tab.
    Esc cancels.
 
-The settings page opens on install. Its "Use Ctrl+Tab" section is optional:
-it shows how a user can assign Ctrl+Tab themselves via the browser's own
-extension shortcuts page. The extension never changes browser shortcuts by itself.
+The settings page opens on install. Its collapsed "Advanced: use Ctrl+Tab
+instead" section is optional and marked as at-your-own-risk: it explains how a
+user can assign Ctrl+Tab themselves through the browser's own extension
+shortcuts page. The extension never changes browser shortcuts by itself.
 
 Note: on browser-internal pages (edge://..., the new tab page) the panel can't
 be drawn, so the first press switches tabs directly; this is expected.
@@ -132,5 +132,5 @@ be drawn, so the first press switches tabs directly; this is expected.
 ## Before you submit
 - [x] Privacy policy is hosted at https://github.com/m-d-nabeel/edge-extensions/blob/main/PRIVACY.md
 - [x] Support contact `md.nabeel.dev@gmail.com`, website https://github.com/m-d-nabeel/edge-extensions
-- [ ] Run `tools/package.sh`, then upload `dist/ctrl-tab-recent-tab-switcher-1.0.0.zip`.
+- [ ] Run `tools/package.sh`, then upload `dist/tab-cycle-mru-1.0.0.zip`.
 - [ ] Markets: all. Visibility: public.

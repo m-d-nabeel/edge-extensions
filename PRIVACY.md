@@ -3,13 +3,13 @@
 **Effective date:** November 8, 2026
 
 This policy covers two browser add-ons by Md Nabeel:
-- **Ctrl+Tab Recent Tab Switcher (MRU)**, an extension
+- **Tab Cycle (MRU) – Switch Recent Tabs**, an extension
 - **AMOLED Pure Black Theme – Totality**, a theme
 
 ## Summary
 Neither add-on collects, transmits, sells or shares any data. There are no accounts, no analytics, no advertising and no remote servers. Everything described below stays inside your browser on your device.
 
-## Ctrl+Tab Recent Tab Switcher (MRU)
+## Tab Cycle (MRU) – Switch Recent Tabs
 
 To switch tabs in recently used order, the extension works with the following information. All of it is processed locally:
 

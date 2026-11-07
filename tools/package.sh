@@ -14,5 +14,5 @@ pack() { # <folder> <zip-name>
   echo "$out  ($(du -h "$out" | cut -f1))"
   unzip -Z1 "$out" | sed 's/^/    /'
 }
-pack tab-cycle    ctrl-tab-recent-tab-switcher
+pack tab-cycle    tab-cycle-mru
 pack amoled-theme amoled-pure-black-theme-totality
